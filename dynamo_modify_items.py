@@ -1,8 +1,8 @@
 from boto3 import resource
-
+import os
 class DynamoRepository:
     
-    def __init__(self, target_dynamo_table, region='us-east-1',):
+    def __init__(self, target_dynamo_table, region = os.getenv('REGION'),):
         self.dynamodb = resource(service_name='dynamodb',
                                  region_name=region)
         
@@ -20,7 +20,7 @@ class DynamoRepository:
            UpdateExpression="ADD EventCount :eventCount")
 
 def main():
-    table_name = "user-visits"#TODO: Remplazar por variables de entorno .env
+    table_name = os.getenv('TABLE')
     dynamo_repo = DynamoRepository(table_name)
     print(dynamo_repo.update_dynamo_event_counter('324', 20171001))
     print(dynamo_repo.update_dynamo_event_counter('324', 20171001, 2))

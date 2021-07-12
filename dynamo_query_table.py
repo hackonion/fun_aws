@@ -2,6 +2,7 @@ import decimal
 import json
 from boto3 import resource
 from boto3.dynamodb.conditions import Key
+import os
 
 class DecimalEncoder(json.JSONEncoder):
     """Helper to convert a DynamoDB item to JSON"""
@@ -16,7 +17,7 @@ class DecimalEncoder(json.JSONEncoder):
     
 class DynamoRepository:
     
-    def __init__(self, target_dynamo_table, region='us-east-1',):
+    def __init__(self, target_dynamo_table, region = os.getenv('REGION'),):
         
         self.dynamoDb = resource(service_name='dynamodb', region_name=region)
         self.dynamoDb_table = target_dynamo_table
@@ -53,7 +54,7 @@ class DynamoRepository:
 
 
 def main():
-    table_name = 'user-visits'#TODO: Remplazar por variables de entorno .env
+    table_name = os.getenv('TABLE')
     partition_key = 'EventId'
     partition_value = '324'
     sort_key = 'EventDay'

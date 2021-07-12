@@ -1,8 +1,8 @@
 import boto3
-from botocore.model import ServiceModel
+import os
 
 def create_dynamo_table(table_name_value, enable_streams=False,
-                        read_capacity=1,write_capacity=1,region='us-east-1'):
+                        read_capacity=1,write_capacity=1,region=os.getenv("REGION")):
     
     table_name = table_name_value
     print(f"Creating table: {table_name}")
@@ -28,7 +28,7 @@ def create_dynamo_table(table_name_value, enable_streams=False,
 
 
 def main():
-    table_name = 'user-visits'
+    table_name = os.getenv('TABLE')
     create_dynamo_table(table_name, False, 1, 1)
     
 if __name__ == '__main__':
